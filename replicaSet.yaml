@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: otus-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: otus
+  template:
+    metadata:
+      labels:
+        app: otus
+    spec:
+      containers:
+        - name: otus
+          image: chill38/otus:v1
+          ports:
+            - containerPort: 8080 # Это порт приложения

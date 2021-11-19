@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: otus
+  labels:
+    app: otus
+spec:
+  containers:
+    - name: otus
+      image: chill38/otus:v1
+      ports:
+        - containerPort: 8080

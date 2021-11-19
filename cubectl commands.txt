@@ -1,0 +1,68 @@
+// Версия
+minikube version
+
+// Стартуем minikube
+minikube start --cpus=6 --memory=6g --vm-driver=hyperv
+
+// Смотрим запущенный minikube
+kubectl get nodes
+
+// Список namespace'ов
+kubectl get namespaces
+
+// Создаём namespace
+kubectl create namespace otus
+
+// Устанавливаем namespace по умолчанию
+kubectl config set-context --current --namespace=otus
+
+// Просмотр подов (-A = из всех namspace'ов)
+kubectl get pods -A
+
+
+// Просмотр docker-env внутри minikube
+minikube docker-env
+// Прописываем, что бы был доступ к docker'у minikube
+$Env:DOCKER_TLS_VERIFY="1"
+$Env:DOCKER_HOST="tcp://172.26.226.75:2376"
+$Env:DOCKER_CERT_PATH="/Users/test/.minikube/certs"
+$Env:MINIKUBE_ACTIVE_DOCKERD="minikube"
+
+
+// Собираем образ docker'а
+docker build -t chill38/otus:v1 .
+
+// Применяем манифест (-n для указания namespace)
+kubectl apply -f pod.yaml
+
+// Детатльная информация о ресурсе 
+kubectl describe pod otus
+
+// Заходим на виртуалку, что бы получить доступ к приложению
+minikube ssh
+	// Ипишник берётся из детальной информации о поде (kubectl describe pod otus)
+	wget -qO- http://172.17.0.3:8080/
+
+// Удалить ресурс
+kubectl delete pod otus
+
+// Удалить метку у пода (оногда полезно для увода на дебаг)
+kubectl label pod otus-rs-dmcf4 label-name- --overwrite
+
+// Обновить образ у deployment'а
+kubectl set image deployment/otus-deployment otus=chill38/otus:v2 --record
+
+// История изменения deployment'а 
+kubectl rollout history deployment/otus-deployment
+
+// Откатить изменения deployment'а
+kubectl rollout undo deployment otus-deployment
+
+// Увеличение количества pod'ов в deployment
+kubectl scale --replicas=4 deployment.apps/otus-deployment
+
+// Получения адреса для доступа из браузера
+minikube service otus-service --url -n otus
+
+
+

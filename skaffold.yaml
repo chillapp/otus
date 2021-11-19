@@ -1,0 +1,15 @@
+apiVersion: skaffold/v2beta26
+kind: Config
+metadata:
+  name: otus
+build:
+  artifacts:
+    - image: chill38/otus
+      docker:
+        dockerfile: Dockerfile
+deploy:
+  kubectl:
+    manifests:
+    - deployment.yaml
+    - service.yaml
+    - ingress.yaml
