@@ -24,7 +24,7 @@ kubectl get pods -A
 minikube docker-env
 // Прописываем, что бы был доступ к docker'у minikube
 $Env:DOCKER_TLS_VERIFY="1"
-$Env:DOCKER_HOST="tcp://172.26.226.75:2376"
+$Env:DOCKER_HOST="tcp://172.24.110.50:2376"
 $Env:DOCKER_CERT_PATH="/Users/test/.minikube/certs"
 $Env:MINIKUBE_ACTIVE_DOCKERD="minikube"
 
@@ -64,5 +64,11 @@ kubectl scale --replicas=4 deployment.apps/otus-deployment
 // Получения адреса для доступа из браузера
 minikube service otus-service --url -n otus
 
+// Удалить все сущности k8s
+kubectl delete all --all
+
+// Получить список постоянных хранилищ
+kubectl get pv
+kubectl get pvc
 
 

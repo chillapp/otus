@@ -8,10 +8,15 @@ import (
 	"os/signal"
 
 	"otus/cmd/app"
+	"otus/storage/mysql"
 )
 
 func main() {
-	webApp := app.Initialize()
+	store, err := mysql.InitStore()
+	if err != nil {
+		log.Fatal(err)
+	}
+	webApp := app.Initialize(store)
 	go func() {
 		if err := webApp.Run(); err != nil {
 			if err == http.ErrServerClosed {

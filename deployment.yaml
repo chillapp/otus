@@ -15,6 +15,9 @@ spec:
       containers:
         - name: otus
           image: chill38/otus:v2
+          env:
+            - name: STORE_PWD
+              value: masterkey
           ports:
             - name: web
               containerPort: 8080

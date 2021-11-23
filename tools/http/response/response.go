@@ -24,7 +24,7 @@ func WithData(ctx *gin.Context, data interface{}) {
 	ctx.JSON(http.StatusOK, data)
 }
 
-func WithFail(ctx *gin.Context, message string) {
+func WithFail(ctx *gin.Context, status int, message string) {
 	resp := response{}
 	resp.Success = false
 	resp.Message = message

@@ -8,6 +8,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"otus/cmd/app/dependencies"
 	health "otus/modules/common/health/delivery/http"
+	users "otus/modules/common/users/delivery/http"
+	"otus/storage"
 )
 
 type App struct {
@@ -15,9 +17,9 @@ type App struct {
 	Modules    *dependencies.Modules
 }
 
-func Initialize() *App {
+func Initialize(store storage.Storage) *App {
 	app := &App{}
-	app.Modules = dependencies.Injection()
+	app.Modules = dependencies.Injection(store)
 	app.httpServer = app.initHttpServer()
 	return app
 }
@@ -39,6 +41,7 @@ func (a *App) regRouters() *gin.Engine {
 	router := gin.Default()
 	router.Use(gin.Logger())
 	health.RegHealthHTTP(router, a.Modules.Health)
+	users.RegUsersHTTP(router, a.Modules.Users)
 	return router
 }
 

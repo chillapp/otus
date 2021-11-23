@@ -9,7 +9,7 @@ spec:
   - host: otus.world
     http:
       paths:
-        - path: /myapp($|/)(.*)
+        - path: /($|/)(.*)
           pathType: Prefix
           backend:
             service:
