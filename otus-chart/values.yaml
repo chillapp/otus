@@ -84,11 +84,15 @@ affinity: {}
 
 mysql:
   enable: true
-  mysqlUsername: root
-  mysqlPassword: masterkey
-  mysqlHost: "mysql-otus"
+  auth:
+    rootPassword: masterkey
+    username: root
+    password: masterkey
   service:
-    port: "3306"
+    port: 3306
+
+auth:
+  rootPassword: masterkey
 
 app:
   port: 8080

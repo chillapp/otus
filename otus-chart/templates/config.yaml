@@ -14,8 +14,7 @@ metadata:
 type: Opaque
 data:
   STORE_URI: {{ printf "%s:%s@tcp(%s:%s)/"
-    .Values.mysql.mysqlUsername
-    .Values.mysql.mysqlPassword
-    .Values.mysql.mysqlHost
+    .Values.mysql.username
+    .Values.mysql.rootPassword ( include "mysql.primary.fullname" .)
     .Values.mysql.service.port | b64enc | quote
   }}
