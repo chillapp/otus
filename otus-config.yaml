@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: otus-config
+data:
+  # STORE_URI: root:masterkey@tcp(mysql-otus)/ # слеш нужен обязательно
+  STORE_DB: otusdb
+  GREETING: Bonjour
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: otus-secret
+type: Opaque
+data:
+  STORE_URI: cm9vdDptYXN0ZXJrZXlAdGNwKG15c3FsLW90dXMpLw==

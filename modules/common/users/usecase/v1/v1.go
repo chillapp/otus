@@ -14,7 +14,7 @@ func NewUsersUC(storage users.Storage) *Users {
 	}
 }
 
-func (uc *Users) Get() interface{} {
+func (uc *Users) Get() (interface{}, error) {
 	return uc.storage.Get()
 }
 

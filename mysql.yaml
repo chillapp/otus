@@ -2,33 +2,33 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: mysql
+  name: mysql-otus
   labels:
-    app: mysql
+    app: mysql-otus
 spec:
   type: NodePort
   ports:
     - port: 3306
   selector:
-    app: mysql
+    app: mysql-otus
 ---
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
-  name: mysql-statefulset
+  name: mysql-statefulset-otus
 spec:
-  serviceName: "mysql"
+  serviceName: "mysql-otus"
   replicas: 1
   selector:
     matchLabels:
-      app: mysql
+      app: mysql-otus
   template:
     metadata:
       labels:
-        app: mysql
+        app: mysql-otus
     spec:
       containers:
-        - name: mysql
+        - name: mysql-otus
           image: mysql:latest
           ports:
             - containerPort: 3306
@@ -38,7 +38,7 @@ spec:
             #  value: myapp
             #- name: MYSQL_USER
             #  value: root
-            - name: STORE_PWD
+            - name: MYSQL_ROOT_PASSWORD
               value: masterkey
           volumeMounts:
             - name: mysqldb

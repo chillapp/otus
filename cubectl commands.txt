@@ -71,4 +71,9 @@ kubectl delete all --all
 kubectl get pv
 kubectl get pvc
 
+// Обновление ENV переменных у deployment
+kubectl set env deploy otus-deployment GREETING=Aloha
+
+// Проверка перед установкой helm
+helm install otus ./otus-chart --dry-run
 

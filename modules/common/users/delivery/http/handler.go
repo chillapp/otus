@@ -19,7 +19,11 @@ func NewHandler(users users.UseCase) *Handler {
 }
 
 func (h *Handler) Get(ctx *gin.Context) {
-	data := h.users.Get()
+	data, err := h.users.Get()
+	if err != nil {
+		response.WithFail(ctx, http.StatusInternalServerError, err.Error())
+		return
+	}
 	response.WithData(ctx, data)
 }
 

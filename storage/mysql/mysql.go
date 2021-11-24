@@ -3,26 +3,52 @@ package mysql
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"os"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jmoiron/sqlx"
+	"otus/storage"
 )
 
 type MySql struct {
 	db *sqlx.DB
 }
 
+// InitStore
+// Соединение с БД
 func InitStore() (*MySql, error) {
-	cfg := map[string]string{
-		"db":    os.Getenv("STORE_DB"),
-		"pwd":   os.Getenv("STORE_PWD"),
-		"host":  os.Getenv("STORE_HOST"),
-		"port":  os.Getenv("STORE_PORT"),
-		"login": os.Getenv("STORE_LOGIN"),
+	storeURI := os.Getenv("STORE_URI")
+	if storeURI == "" {
+		return nil, storage.ErrStoreUriEmpty
 	}
-	dbURI := createURI(cfg)
-	db, err := sqlx.Open("mysql", dbURI)
+	storeDB := os.Getenv("STORE_DB")
+	if storeDB == "" {
+		return nil, storage.ErrStoreDbEmpty
+	}
+	log.Println("Opening store: ", storeURI)
+	db, err := sqlx.Open("mysql", storeURI)
+	if err != nil {
+		return nil, err
+	}
+	err = db.Ping()
+	if err != nil {
+		return nil, err
+	}
+	dbQuery := fmt.Sprintf("CREATE DATABASE IF NOT EXISTS %s", storeDB)
+	_, err = db.Exec(dbQuery)
+	if err != nil {
+		return nil, err
+	}
+	err = db.Close()
+	if err != nil {
+		return nil, err
+	}
+	db, err = sqlx.Open("mysql", storeURI+storeDB)
+	if err != nil {
+		return nil, err
+	}
+	err = db.Ping()
 	if err != nil {
 		return nil, err
 	}
@@ -41,6 +67,10 @@ func (store *MySql) Begin() (*sqlx.Tx, error) {
 
 func (store *MySql) Get(target interface{}, sql string, params ...interface{}) error {
 	return store.db.Get(target, sql, params...)
+}
+
+func (store *MySql) Select(target interface{}, sql string, params ...interface{}) error {
+	return store.db.Select(target, sql, params...)
 }
 
 func (store *MySql) LastInsertId(target *int, r sql.Result) error {

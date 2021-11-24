@@ -1,11 +1,11 @@
 package users
 
 type Storage interface {
-	Get() []User
+	Get() ([]User, error)
 	Create(*User) error
 }
 
 type UseCase interface {
-	Get() interface{}
+	Get() (interface{}, error)
 	Create(*User) error
 }

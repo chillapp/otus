@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: otus-deployment
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: otus-app
@@ -16,21 +16,34 @@ spec:
         - name: otus
           image: chill38/otus:v2
           env:
-            - name: STORE_PWD
-              value: masterkey
+            - name: STORE_URI
+              valueFrom:
+                secretKeyRef:
+                  name: otus-secret
+                  key: STORE_URI
+            - name: STORE_DB
+              valueFrom:
+                configMapKeyRef:
+                  name: otus-config
+                  key: STORE_DB
+            - name: GREETING
+              valueFrom:
+                configMapKeyRef:
+                  name: otus-config
+                  key: GREETING
           ports:
             - name: web
               containerPort: 8080
-          livenessProbe:
-            httpGet:
-              port: 8080
-              path: /
-            initialDelaySeconds: 10
-            periodSeconds: 5
-            timeoutSeconds: 2
-          readinessProbe:
-            httpGet:
-              port: 8080
-              path: /health
-            initialDelaySeconds: 10
-            periodSeconds: 5
+          #livenessProbe:
+          #  httpGet:
+          #    port: 8080
+          #    path: /
+          #  initialDelaySeconds: 10
+          #  periodSeconds: 5
+          #  timeoutSeconds: 2
+          #readinessProbe:
+          #  httpGet:
+          #    port: 8080
+          #    path: /health
+          #  initialDelaySeconds: 10
+          #  periodSeconds: 5

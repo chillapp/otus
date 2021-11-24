@@ -15,8 +15,14 @@ func NewUsersStorage(db storage.Storage) *Storage {
 	}
 }
 
-func (store *Storage) Get() []users.User {
-	return nil
+func (store *Storage) Get() ([]users.User, error) {
+	var u []users.User
+	query := "SELECT id, name FROM users"
+	err := store.db.Select(&u, query)
+	if err != nil {
+		return nil, err
+	}
+	return u, nil
 }
 
 func (store *Storage) Create(user *users.User) error {

@@ -25,13 +25,17 @@ func (h *Handler) Health(ctx *gin.Context) {
 }
 
 func (h *Handler) Hello(ctx *gin.Context) {
-	helloMessage := fmt.Sprintf("Hello world from %s!", os.Getenv("HOSTNAME"))
+	greeting := os.Getenv("GREETING")
+	if greeting == "" {
+		greeting = "Hello"
+	}
+	helloMessage := fmt.Sprintf("%s world from %s!", greeting, os.Getenv("HOSTNAME"))
 	response.WithData(ctx, helloMessage)
 }
 
 func (h *Handler) Version(ctx *gin.Context) {
 	version := health.Version{
-		Version: "0.2",
+		Version: "0.3",
 	}
 	response.WithData(ctx, version)
 }
