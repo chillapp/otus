@@ -4,3 +4,7 @@ kubectl apply -f otus-config.yaml -f mysql.yaml -f service.yaml -f deployment.ya
 или 
 <br>
 skaffold run
+<br>
+или
+<br>
+helm install otus ./otus-chart # тут у меня проблема, не стартует зависимая пода с mysql
