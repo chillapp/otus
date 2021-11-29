@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: otus
-          image: chill38/otus:v2
+          image: chill38/otus:v4
           env:
             - name: STORE_URI
               valueFrom:
