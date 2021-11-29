@@ -1,11 +1,17 @@
 package users
 
 type Storage interface {
-	Get() ([]User, error)
-	Create(*User) error
+	GetUsers() ([]User, error)
+	GetUser(int) (User, error)
+	CreateUser(*User) error
+	DeleteUser(int) error
+	ModifyUser(int, map[string]string) error
 }
 
 type UseCase interface {
-	Get() (interface{}, error)
-	Create(*User) error
+	GetUser(int) (interface{}, error)
+	GetUsers() (interface{}, error)
+	CreateUser(*User) error
+	DeleteUser(int) error
+	ModifyUser(int, map[string]string) error
 }

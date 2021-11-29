@@ -28,5 +28,5 @@ func WithFail(ctx *gin.Context, status int, message string) {
 	resp := response{}
 	resp.Success = false
 	resp.Message = message
-	ctx.JSON(http.StatusOK, resp)
+	ctx.JSON(status, resp)
 }

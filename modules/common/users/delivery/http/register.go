@@ -7,6 +7,9 @@ import (
 
 func RegUsersHTTP(router *gin.Engine, users users.UseCase) {
 	h := NewHandler(users)
-	router.GET("users", h.Get)
-	router.POST("users", h.Create)
+	router.GET("users", h.GetUsers)
+	router.POST("user", h.CreateUser)
+	router.GET("user/:id", h.GetUser)
+	router.PUT("user/:id", h.ModifyUser)
+	router.DELETE("user/:id", h.DeleteUser)
 }
