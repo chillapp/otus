@@ -85,14 +85,11 @@ affinity: {}
 mysql:
   enable: true
   auth:
-    rootPassword: masterkey
-    username: root
-    password: masterkey
+    rootPassword: "masterkey"
+    username: "root"
+    password: "masterkey"
   service:
-    port: 3306
-
-auth:
-  rootPassword: masterkey
+    port: "3306"
 
 app:
   port: 8080
