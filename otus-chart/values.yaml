@@ -8,7 +8,7 @@ image:
   repository: chill38/otus
   pullPolicy: IfNotPresent
   # Overrides the image tag whose default is the chart appVersion.
-  tag: ""
+  tag: "v6" # Версия образа docker
 
 imagePullSecrets: []
 nameOverride: ""
@@ -84,6 +84,14 @@ affinity: {}
 
 mysql:
   enable: true
+  primary:
+    fullname: "otus-mysql"
+    livenessProbe:
+      enabled: false
+    readinessProbe:
+      enabled: false
+    startupProbe:
+      enabled: false
   auth:
     rootPassword: "masterkey"
     username: "root"

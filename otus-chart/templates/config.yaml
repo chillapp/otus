@@ -6,6 +6,7 @@ data:
   # STORE_URI: root:masterkey@tcp(mysql-otus)/ # слеш нужен обязательно
   STORE_DB: otusdb
   GREETING: Bonjour
+  MYSQL_DATABASE: otusdb
 ---
 apiVersion: v1
 kind: Secret
@@ -15,6 +16,7 @@ type: Opaque
 data:
   STORE_URI: {{ printf "%s:%s@tcp(%s:%s)/"
     .Values.mysql.auth.username
-    .Values.mysql.auth.rootPassword ( include "mysql.primary.fullname" .)
+    .Values.mysql.auth.rootPassword
+    .Values.mysql.primary.fullname
     .Values.mysql.service.port | b64enc | quote
   }}

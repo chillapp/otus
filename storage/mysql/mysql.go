@@ -52,9 +52,16 @@ func InitStore() (*MySql, error) {
 	if err != nil {
 		return nil, err
 	}
-	return &MySql{
+	log.Println("Store opened...")
+	store := &MySql{
 		db: db,
-	}, nil
+	}
+	return store, store.doMigrate()
+}
+
+func (store *MySql) doMigrate() error {
+	_, err := store.db.Exec("CREATE TABLE IF NOT EXISTS users (id int auto_increment primary key, name varchar(256))")
+	return err
 }
 
 func createURI(cfg map[string]string) string {
